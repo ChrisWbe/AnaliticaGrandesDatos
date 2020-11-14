@@ -14,15 +14,24 @@
 -- 
 -- Escriba el resultado a la carpeta `output` del directorio actual.
 -- 
+fs -rm -f -r pig_*;
 fs -rm -f -r output;
 --
-u = LOAD 'data.csv' USING PigStorage(',') 
-    AS (id:int, 
-        firstname:CHARARRAY, 
-        surname:CHARARRAY, 
-        birthday:CHARARRAY, 
-        color:CHARARRAY, 
-        quantity:INT);
+data = LOAD '*.csv' USING PigStorage(',') AS (
+    num:int,
+    nombre:chararray,
+    apellido:chararray,
+    fechas:chararray,
+    color:chararray,
+    val:int
+);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+datos = FOREACH data GENERATE apellido AS apellido,SIZE(apellido) AS tam;
+
+datos = ORDER datos BY tam DESC, apellido ASC;
+datos = limit datos  5;
+
+STORE datos INTO 'output' USING PigStorage(',') ;
