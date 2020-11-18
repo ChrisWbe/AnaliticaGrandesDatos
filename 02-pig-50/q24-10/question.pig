@@ -13,6 +13,7 @@
 -- 
 -- Escriba el resultado a la carpeta `output` del directorio actual.
 -- 
+fs -rm -f -r pig_*;
 fs -rm -f -r output;
 --
 u = LOAD 'data.csv' USING PigStorage(',') 
@@ -25,4 +26,5 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+mes = FOREACH u GENERATE SUBSTRING(birthday, 5, 7);
+STORE mes INTO 'output';

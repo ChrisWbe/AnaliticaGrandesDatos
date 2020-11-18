@@ -29,4 +29,5 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+year = FOREACH u GENERATE SUBSTRING(birthday, 0, 4),SUBSTRING(birthday, 2, 4);
+STORE year INTO 'output' USING PigStorage(',');

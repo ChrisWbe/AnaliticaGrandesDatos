@@ -28,4 +28,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+data = FOREACH u GENERATE firstname,color;
+data = FILTER data BY (color matches '[a-z]+[n]$');
+--data = FILTER data BY (SUBSTRING(color,4,5) matches 'n');
+--data = FILTER data BY color matches 'green');
+STORE data INTO 'output' USING PigStorage(',');

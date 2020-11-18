@@ -15,6 +15,7 @@
 -- 
 -- Escriba el resultado a la carpeta `output` del directorio actual.
 -- 
+fs -rm -f -r pig_*;
 fs -rm -f -r output;
 --
 u = LOAD 'data.csv' USING PigStorage(',') 
@@ -27,3 +28,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+data = FOREACH u GENERATE firstname,color;
+data = FILTER data BY (SUBSTRING(color, 0, 10) matches '[b][l][u][e]') OR (SUBSTRING(firstname,0,1) matches '[K]');
+STORE data INTO 'output' USING PigStorage(',');

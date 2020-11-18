@@ -27,3 +27,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+data = FOREACH u GENERATE firstname,color;
+data = FILTER data BY (SUBSTRING(color, 0, 2) matches '[^b][^l]');
+STORE data INTO 'output' USING PigStorage(',');

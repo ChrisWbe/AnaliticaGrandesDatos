@@ -40,3 +40,5 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+fecha = FOREACH u GENERATE birthday,SUBSTRING(birthday, 5, 7), GetMonth(ToDate(birthday,'yyyy-MM-dd'));
+dump fecha;
