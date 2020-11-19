@@ -27,6 +27,10 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-name = FOREACH u GENERATE (SUBSTRING(firstname,0,1)>='M' ? firstname:'null') AS firstname;
-name = FILTER name BY firstname!='null';
-STORE name INTO 'output';
+--'[m-zM-Z]'
+--name = FOREACH u GENERATE (SUBSTRING(firstname,0,1)>='M' ? firstname:'null') AS firstname;
+--name = FILTER name BY firstname!='null';
+coolor = FOREACH u GENERATE firstname AS fn;
+zcoolor = FILTER coolor BY (SUBSTRING(fn,0,1) MATCHES '[m-zM-Z]');
+STORE zcoolor INTO 'output';
+--STORE name INTO 'output';

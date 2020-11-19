@@ -30,6 +30,7 @@
 -- 
 fs -rm -f -r output;
 --
+--DEFINE stream_alias 'python3' SHIP('udf.py');
 u = LOAD 'data.csv' USING PigStorage(',') 
     AS (id:int, 
         firstname:CHARARRAY, 
@@ -40,4 +41,29 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+--data = STREAM u THROUGH stream_alias;
+--dump data;
+data = FOREACH u GENERATE birthday,
+        SUBSTRING(birthday, 8, 10),
+        GetDay(ToDate(birthday,'yyyy-MM-dd')),
+        (CASE ToString(ToDate(birthday,'yyyy-MM-dd'),'EEE')
+            WHEN 'Mon' THEN 'lun'
+            WHEN 'Tue' THEN 'mar'
+            WHEN 'Wed' THEN 'mie'
+            WHEN 'Thu' THEN 'jue'
+            WHEN 'Fri' THEN 'vie'
+            WHEN 'Sat' THEN 'sab'
+            WHEN 'Sun' THEN 'dom'
+            ELSE NULL END
+        ),
+        (CASE ToString(ToDate(birthday,'yyyy-MM-dd'),'EEE')
+            WHEN 'Mon' THEN 'lunes'
+            WHEN 'Tue' THEN 'martes'
+            WHEN 'Wed' THEN 'miercoles'
+            WHEN 'Thu' THEN 'jueves'
+            WHEN 'Fri' THEN 'viernes'
+            WHEN 'Sat' THEN 'sabado'
+            WHEN 'Sun' THEN 'domingo'
+            ELSE NULL END
+        );
+STORE data INTO 'output' USING PigStorage(',');

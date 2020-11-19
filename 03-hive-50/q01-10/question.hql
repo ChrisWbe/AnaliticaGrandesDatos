@@ -11,3 +11,13 @@
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS data;
+CREATE TABLE data (
+    letra   string,
+    fecha   string,
+    valor   int
+) ROW FORMAT DELIMITED FIELDS TERMINATED BY '/t';
+
+
+LOAD DATA LOCAL INPATH 'data.tsv' OVERWRITE INTO TABLE data;
+SELECT  * FROM    data LIMIT 10;
