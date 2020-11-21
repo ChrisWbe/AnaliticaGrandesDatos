@@ -39,5 +39,13 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select c2, concat_ws(':', collect_list(cast(c1 as string))) as numeros from tbl0 group by c2;
+        
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;
 

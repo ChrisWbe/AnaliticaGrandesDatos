@@ -40,3 +40,12 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select DISTINCT(letras) from tbl0
+        lateral view explode(c5) table1 AS letras;
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;

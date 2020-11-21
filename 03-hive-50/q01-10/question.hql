@@ -12,12 +12,22 @@
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
 DROP TABLE IF EXISTS data;
+DROP TABLE IF EXISTS resultado;
 CREATE TABLE data (
     letra   string,
     fecha   string,
     valor   int
-) ROW FORMAT DELIMITED FIELDS TERMINATED BY '/t';
+) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
 
 
 LOAD DATA LOCAL INPATH 'data.tsv' OVERWRITE INTO TABLE data;
-SELECT  * FROM    data LIMIT 10;
+
+
+CREATE TABLE resultado 
+    AS 
+        SELECT letra, count(*) FROM data 
+            group by letra;
+
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM resultado;

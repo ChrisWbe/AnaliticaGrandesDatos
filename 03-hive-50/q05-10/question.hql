@@ -39,4 +39,13 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS
+        SELECT  year(c4), letras, count(1) FROM tbl0
+        LATERAL VIEW explode(c5) table1 AS letras
+        GROUP BY year(c4), letras;
 
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;
