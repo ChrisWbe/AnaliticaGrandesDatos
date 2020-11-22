@@ -22,5 +22,13 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select c1,size(c2),size(c3) from t0;
 
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;
 

@@ -26,5 +26,16 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select letras, myKey, count(*) from t0
+        lateral view explode(c2) table0 AS letras
+        lateral view explode(c3) table1 AS myKey,myValue
+        group by letras, myKey;
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;
 
 

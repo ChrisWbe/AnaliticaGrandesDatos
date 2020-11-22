@@ -39,3 +39,20 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select t0.c1, t0.c2, t1.c4 from tbl0 t0 join tbl1 t1
+        on (t0.c1 = t1.c1);
+
+DROP TABLE IF EXISTS consulta2;
+CREATE TABLE consulta2
+    AS
+        select c1, c2, myValue from consulta
+        lateral view explode(c4) table1 AS myKey,myValue
+        where myKey=c2;
+        
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta2;

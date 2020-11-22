@@ -40,5 +40,14 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+DROP TABLE IF EXISTS consulta;
+CREATE TABLE consulta
+    AS  
+        select c2,sum(myValue) from tbl0
+        lateral view explode(c6) table1 AS myKey,myValue
+        group by c2;
+            
+INSERT OVERWRITE DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM consulta;
 
