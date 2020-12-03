@@ -72,5 +72,8 @@ if __name__ == '__main__':
                 listLetra[tupla] = aux
                 band = 0
     #sys.stdout.write("{}\t{}\n".format(curkey, listLetra))
+    listLetra.insert(7,listLetra[12])
+    listLetra.pop(13)
+        
     for tupla in listLetra:
         sys.stdout.write("{}   {}   {}\n".format(curkey,tupla[0], tupla[1]))
